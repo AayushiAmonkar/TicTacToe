@@ -5,6 +5,7 @@ const App = () => {
   return (
     <div className="app">
       <h1>TIC TAC TOE!</h1>
+      {/* <h2>Message</h2> */}
       <Board />
     </div>
   );
