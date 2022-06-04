@@ -120,8 +120,8 @@ const Board = () => {
           Undo
         </button>
       </div>
-      <h2>Current Game History</h2>
-      <History history={history} moveTo={moveTo} currentMove={currentMove} />
+      {/* <h2>Current Game History</h2>
+      <History history={history} moveTo={moveTo} currentMove={currentMove} /> */}
     </>
   );
 };
