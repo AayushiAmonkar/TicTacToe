@@ -1,9 +1,8 @@
 import React from 'react';
 
 const StatusMessage = ({ winner, current }) => {
-  const noMovesLeft = current.board.every(ele => {
-    el !== null;
-  });
+  const noMovesLeft = current.board.every(ele => ele !== null);
+  console.log(noMovesLeft);
   return (
     <h2>
       {winner && `winner is ${winner}`}

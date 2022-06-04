@@ -3,23 +3,30 @@ import Square from './Square';
 import History from './History';
 import { calculateWinner } from './WinnerCalc';
 import StatusMessage from './StatusMessage';
+
+const NEW_GAME = [{ board: Array(9).fill(null), isXNext: true }];
+
 const Board = () => {
-  const [history, setHistory] = useState([
-    { board: Array(9).fill(null), isXNext: true },
-  ]);
+  const [history, setHistory] = useState(NEW_GAME);
   const [currentMove, setCurrentMove] = useState(0);
+  const current = history[currentMove];
   //   const [board, setBoard] = useState(Array(9).fill(null));
   //   const [isXNext, setIsXNext] = useState(false);
-  //   console.log(board);
-  const current = history[currentMove];
-  const winner = calculateWinner(current.board);
-  //   const message = winner
-  //     ? `winner is ${winner}`
-  //     : `next player is ${current.isXNext ? 'X' : 'O'}`;
-  //   console.log(winner);
+  // //   console.log(board);
+
+  const winnerer = calculateWinner(current.board);
+  // //   const message = winner
+  // //     ? `winner is ${winner}`
+  // //     : `next player is ${current.isXNext ? 'X' : 'O'}`;
+  // //   console.log(winner);
+
+  const onNewGame = () => {
+    setHistory(NEW_GAME);
+    setCurrentMove(0);
+  };
   const handleSquareClick = position => {
-    console.log(history);
-    if (current.board[position] || winner) {
+    // console.log(history);
+    if (current.board[position] || winnerer.winner) {
       return;
     }
     setHistory(prev => {
@@ -37,22 +44,34 @@ const Board = () => {
     setCurrentMove(prev => prev + 1);
   };
   const renderSquare = position => {
+    const isWinningSquare = winnerer.winningSquare.includes(position);
     return (
       <Square
         value={current.board[position]}
         onClick={() => {
           handleSquareClick(position);
         }}
+        isWinningSquare={isWinningSquare}
       />
     );
   };
 
-  const moveTo = move => {
-    setCurrentMove(move);
+  const onUndo = () => {
+    console.log(history);
+    setHistory(prev => {
+      return prev.filter((curval, ind) => {
+        return ind != prev.length - 1;
+      });
+    });
+    setCurrentMove(prev => prev - 1);
   };
+
+  // const moveTo = move => {
+  //   setCurrentMove(move);
+  // };
   return (
     <>
-      <StatusMessage winner={winner} current={current} />
+      <StatusMessage winner={winnerer.winner} current={current} />
       <div className="board">
         <div className="board-row">
           {renderSquare(0)}
@@ -84,6 +103,14 @@ const Board = () => {
           {renderSquare(7)}
           {renderSquare(8)}
         </div>
+      </div>
+      <div>
+        <button type="button" className="special-btn" onClick={onNewGame}>
+          New Game
+        </button>
+        <button type="button" className="special-btn" onClick={onUndo}>
+          Undo
+        </button>
       </div>
       <History history={history} moveTo={moveTo} currentMove={currentMove} />
     </>

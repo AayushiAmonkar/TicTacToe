@@ -41,3 +41,20 @@ button {
     }
   }
 }
+
+.special-btn {
+  background-color: rgb(25, 123, 100);
+  padding: 10px;
+  margin: 30px;
+  color: antiquewhite;
+  outline: none;
+  // box-shadow: 5px 7px black;
+  // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  transition: 0.2s all;
+  cursor: pointer;
+  &:hover {
+    transform: scale(0.95);
+    box-shadow: rgb(38, 57, 77) 10px 20px 30px -10px;
+  }
+}
