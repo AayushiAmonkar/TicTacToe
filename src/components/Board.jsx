@@ -57,7 +57,10 @@ const Board = () => {
   };
 
   const onUndo = () => {
-    console.log(history);
+    // console.log(history);
+    if (currentMove == 0) {
+      return;
+    }
     setHistory(prev => {
       return prev.filter((curval, ind) => {
         return ind != prev.length - 1;
@@ -66,9 +69,9 @@ const Board = () => {
     setCurrentMove(prev => prev - 1);
   };
 
-  // const moveTo = move => {
-  //   setCurrentMove(move);
-  // };
+  const moveTo = move => {
+    setCurrentMove(move);
+  };
   return (
     <>
       <StatusMessage winner={winnerer.winner} current={current} />
@@ -105,13 +108,19 @@ const Board = () => {
         </div>
       </div>
       <div>
-        <button type="button" className="special-btn" onClick={onNewGame}>
+        <button
+          type="button"
+          // className="special-btn"
+          onClick={onNewGame}
+          className={`btn-reset ${winnerer.winner ? 'active' : ''}`}
+        >
           New Game
         </button>
-        <button type="button" className="special-btn" onClick={onUndo}>
+        <button type="button" className={`btn-reset undo `} onClick={onUndo}>
           Undo
         </button>
       </div>
+      <h2>Current Game History</h2>
       <History history={history} moveTo={moveTo} currentMove={currentMove} />
     </>
   );
