@@ -6,7 +6,9 @@ const App = () => {
   return (
     <div className="app">
       <h1>
-        TIC <span className="text-green">TAC</span> TOE!
+        <span className="text-orange">TIC</span>{' '}
+        <span className="text-green">TAC</span>{' '}
+        <span className="text-orange">TOE!</span>
       </h1>
       {/* <h2>Message</h2> */}
       <Board />

@@ -8,6 +8,7 @@ body {
   color: #fff;
   padding: 0;
   margin: 0;
+  // font-weight: 700;
 }
 
 button {
@@ -85,15 +86,19 @@ button {
   margin-top: 25px;
   transition: all 0.2s;
   background-color: $blue;
-  box-shadow: 0px 0px 0px 1px $orange;
+  border: 1.5px solid $orange;
+  // box-shadow: 0px 0px 0px 1px $orange;
   &.active {
     background-color: $orange;
     box-shadow: none;
   }
+  &:hover {
+    transform: scale(0.9);
+  }
 }
 .undo {
   background-color: $green;
-  border: none;
+  border: 1.5px solid $green;
   outline: none;
 }
 
@@ -197,5 +202,22 @@ button {
   &:hover {
     transform: scale(0.95);
     box-shadow: rgb(38, 57, 77) 10px 20px 30px -10px;
+  }
+}
+
+.score-board {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: medium;
+  // padding: 20px;
+  .score {
+    margin: 5px 20px;
+    padding: 5px;
+    // background-color: $green;
+
+    .score-no {
+      text-align: center;
+    }
   }
 }

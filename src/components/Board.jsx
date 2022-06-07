@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Square from './Square';
 import History from './History';
 import { calculateWinner } from './WinnerCalc';
 import StatusMessage from './StatusMessage';
+// import ScoreBoard from './ScoreBoard';
 
 const NEW_GAME = [{ board: Array(9).fill(null), isXNext: true }];
 
@@ -10,23 +11,29 @@ const Board = () => {
   const [history, setHistory] = useState(NEW_GAME);
   const [currentMove, setCurrentMove] = useState(0);
   const current = history[currentMove];
+
+  // const [player, setPlayer] = useState(2);
   //   const [board, setBoard] = useState(Array(9).fill(null));
   //   const [isXNext, setIsXNext] = useState(false);
   // //   console.log(board);
+  // const [scoreBoard, setScoreBoard] = useState([0, 0, 0]);
 
-  const winnerer = calculateWinner(current.board);
+  const winnerPlayer = calculateWinner(current.board);
   // //   const message = winner
   // //     ? `winner is ${winner}`
   // //     : `next player is ${current.isXNext ? 'X' : 'O'}`;
   // //   console.log(winner);
-
+  const noMovesLeft = current.board.every(ele => ele !== null);
+  // useEffect(() => {
+  //   console.log('change');
+  // }, [winnerPlayer.winner, noMovesLeft]);
   const onNewGame = () => {
     setHistory(NEW_GAME);
     setCurrentMove(0);
   };
   const handleSquareClick = position => {
     // console.log(history);
-    if (current.board[position] || winnerer.winner) {
+    if (current.board[position] || winnerPlayer.winner) {
       return;
     }
     setHistory(prev => {
@@ -44,7 +51,10 @@ const Board = () => {
     setCurrentMove(prev => prev + 1);
   };
   const renderSquare = position => {
-    const isWinningSquare = winnerer.winningSquare.includes(position);
+    const isWinningSquare = winnerPlayer.winningSquare.includes(position);
+    // if (winnerPlayer.winner || noMovesLeft) {
+    //   console.log(winnerPlayer);
+    // }
     return (
       <Square
         value={current.board[position]}
@@ -55,6 +65,16 @@ const Board = () => {
       />
     );
   };
+
+  // const changePlayer = () => {
+  //   setPlayer(prev => {
+  //     if (prev == 1) {
+  //       return 2;
+  //     } else {
+  //       return 1;
+  //     }
+  //   });
+  // };
 
   const onUndo = () => {
     // console.log(history);
@@ -69,12 +89,37 @@ const Board = () => {
     setCurrentMove(prev => prev - 1);
   };
 
+  const changeScore = () => {
+    if (winnerPlayer.winner || noMovesLeft) {
+      console.log('change');
+      // setScoreBoard(prev => {
+      //   if (winnerPlayer.winner === 'X') {
+      //     return [prev[0] + 1, prev[1], prev[2]];
+      //   }
+      //   if (winnerPlayer.winner === 'O') {
+      //     return [prev[0], prev[1], prev[2] + 1];
+      //   }
+      //   if (noMovesLeft) {
+      //     return [prev[0], prev[1] + 1, prev[2]];
+      //   }
+      // });
+    }
+    // return (
+    //   <ScoreBoard
+    //     scoreBoard={scoreBoard}
+    //     player={player}
+    //     changePlayer={changePlayer}
+    //     winner={winnerPlayer.winner}
+    //     changeScore={changeScore}
+    //   />
+    // );
+  };
   const moveTo = move => {
     setCurrentMove(move);
   };
   return (
     <>
-      <StatusMessage winner={winnerer.winner} current={current} />
+      <StatusMessage winner={winnerPlayer.winner} current={current} />
       <div className="board">
         <div className="board-row">
           {renderSquare(0)}
@@ -112,7 +157,9 @@ const Board = () => {
           type="button"
           // className="special-btn"
           onClick={onNewGame}
-          className={`btn-reset ${winnerer.winner ? 'active' : ''}`}
+          className={`btn-reset ${
+            winnerPlayer.winner || noMovesLeft ? 'active' : ''
+          }`}
         >
           New Game
         </button>
@@ -120,8 +167,10 @@ const Board = () => {
           Undo
         </button>
       </div>
-      {/* <h2>Current Game History</h2>
-      <History history={history} moveTo={moveTo} currentMove={currentMove} /> */}
+      <h2>Current Game History</h2>
+      <History history={history} moveTo={moveTo} currentMove={currentMove} />
+
+      {/* {changeScore()} */}
     </>
   );
 };
